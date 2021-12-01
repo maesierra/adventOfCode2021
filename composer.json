@@ -1,0 +1,24 @@
+{
+    "name": "maesierra/advent-of-code-2021",
+    "type": "project",
+    "require-dev": {
+    },
+    "authors": [
+        {
+            "name": "Maria-Eugenia Sierra",
+            "email": "mae@maesierra.net"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "maesierra": "src",
+            "maesierra\\Tests": "tests"
+        }
+    },
+    "require": {
+        "symfony/console": "v3.4.47",
+        "phpunit/phpunit": "9.3.8",
+        "farafiri/php-parsing-tool": "^2.0",
+        "ext-intl": "*"
+    }
+}
