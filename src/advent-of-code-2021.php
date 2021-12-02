@@ -89,12 +89,10 @@ $app->add(runQuestion(1, 2, function($file) {
     return (new Day1())->question2($file ?: "input_day1.txt");
 }));
 $app->add(runQuestion(2, 1, function($file) {
-    $validPasswords = (new Day2())->question1($file);
-    return count($validPasswords);
+    return (new Day2())->question1($file ?: "input_day2.txt");
 }));
 $app->add(runQuestion(2, 2, function($file) {
-    $validPasswords = (new Day2())->question2($file);
-    return count($validPasswords);
+    return (new Day2())->question2($file ?: "input_day2.txt");
 }));
 $app->add(runQuestion(3, 1, function($file) {
     return (new Day3())->question1($file);
