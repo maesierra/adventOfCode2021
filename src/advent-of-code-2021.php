@@ -95,10 +95,10 @@ $app->add(runQuestion(2, 2, function($file) {
     return (new Day2())->question2($file ?: "input_day2.txt");
 }));
 $app->add(runQuestion(3, 1, function($file) {
-    return (new Day3())->question1($file);
+    return (new Day3())->question1($file ?: "input_day3.txt");
 }));
 $app->add(runQuestion(3, 2, function($file) {
-    return (new Day3())->question2($file);
+    return (new Day3())->question2($file ?: "input_day3.txt");
 }));
 $app->add(runQuestion(4, 1, function($file) {
     return (new Day4())->question1($file);
