@@ -101,16 +101,16 @@ $app->add(runQuestion(3, 2, function($file) {
     return (new Day3())->question2($file ?: "input_day3.txt");
 }));
 $app->add(runQuestion(4, 1, function($file) {
-    return (new Day4())->question1($file);
+    return (new Day4())->question1($file ?: "input_day4.txt");
 }));
 $app->add(runQuestion(4, 2, function($file) {
-    return (new Day4())->question2($file);
+    return (new Day4())->question2($file ?: "input_day4.txt");
 }));
 $app->add(runQuestion(5, 1, function($file) {
-    return (new Day5())->question1($file);
+    return (new Day5())->question1($file ?: "input_day5.txt");
 }));
 $app->add(runQuestion(5, 2, function($file) {
-    return (new Day5())->question2($file);
+    return (new Day5())->question2($file ?: "input_day5.txt");
 }));
 $app->add(runQuestion(6, 1, function($file) {
     return (new Day6())->question1($file);
