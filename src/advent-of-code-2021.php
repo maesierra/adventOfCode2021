@@ -113,10 +113,10 @@ $app->add(runQuestion(5, 2, function($file) {
     return (new Day5())->question2($file ?: "input_day5.txt");
 }));
 $app->add(runQuestion(6, 1, function($file) {
-    return (new Day6())->question1($file);
+    return (new Day6())->question1($file ?: "input_day6.txt");
 }));
 $app->add(runQuestion(6, 2, function($file) {
-    return (new Day6())->question2($file);
+    return (new Day6())->question2($file ?: "input_day6.txt");
 }));
 $app->add(runQuestion(7, 1, function($file) {
     return (new Day7())->question1($file);
