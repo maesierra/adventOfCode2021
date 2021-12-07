@@ -10,8 +10,6 @@ namespace maesierra\AdventOfCode2021;
 
 
 
-use maesierra\AdventOfCode2021\Day6\Lanternfish;
-
 class Day6 {
 
     /**

@@ -81,156 +81,40 @@ function runQuestion($day, $question, $run)
         }
     };
 }
+$daySolutions = [
+    1 => new Day1(),
+    2 => new Day2(),
+    3 => new Day3(),
+    4 => new Day4(),
+    5 => new Day5(),
+    6 => new Day6(),
+    7 => new Day7(),
+    8 => new Day8(),
+    9 => new Day9(),
+    10 => new Day10(),
+    11 => new Day11(),
+    12 => new Day12(),
+    13 => new Day13(),
+    14 => new Day14(),
+    15 => new Day15([]),
+    16 => new Day16(),
+    17 => new Day17(),
+    18 => new Day18(),
+    19 => new Day19(),
+    20 => new Day20(),
+    21 => new Day21(),
+    22 => new Day22(),
+    23 => new Day23(),
+    24 => new Day24(),
+    25 => new Day25(),
 
-$app->add(runQuestion(1, 1, function($file) {
-    return (new Day1())->question1($file ?: "input_day1.txt");
-}));
-$app->add(runQuestion(1, 2, function($file) {
-    return (new Day1())->question2($file ?: "input_day1.txt");
-}));
-$app->add(runQuestion(2, 1, function($file) {
-    return (new Day2())->question1($file ?: "input_day2.txt");
-}));
-$app->add(runQuestion(2, 2, function($file) {
-    return (new Day2())->question2($file ?: "input_day2.txt");
-}));
-$app->add(runQuestion(3, 1, function($file) {
-    return (new Day3())->question1($file ?: "input_day3.txt");
-}));
-$app->add(runQuestion(3, 2, function($file) {
-    return (new Day3())->question2($file ?: "input_day3.txt");
-}));
-$app->add(runQuestion(4, 1, function($file) {
-    return (new Day4())->question1($file ?: "input_day4.txt");
-}));
-$app->add(runQuestion(4, 2, function($file) {
-    return (new Day4())->question2($file ?: "input_day4.txt");
-}));
-$app->add(runQuestion(5, 1, function($file) {
-    return (new Day5())->question1($file ?: "input_day5.txt");
-}));
-$app->add(runQuestion(5, 2, function($file) {
-    return (new Day5())->question2($file ?: "input_day5.txt");
-}));
-$app->add(runQuestion(6, 1, function($file) {
-    return (new Day6())->question1($file ?: "input_day6.txt");
-}));
-$app->add(runQuestion(6, 2, function($file) {
-    return (new Day6())->question2($file ?: "input_day6.txt");
-}));
-$app->add(runQuestion(7, 1, function($file) {
-    return (new Day7())->question1($file);
-}));
-$app->add(runQuestion(7, 2, function($file) {
-    return (new Day7())->question2($file);
-}));
-$app->add(runQuestion(8, 1, function($file) {
-    return (new Day8())->question1($file);
-}));
-$app->add(runQuestion(8, 2, function($file) {
-    return (new Day8())->question2($file);
-}));
-$app->add(runQuestion(9, 1, function($file) {
-    return (new Day9())->question1($file, 25);
-}));
-$app->add(runQuestion(9, 2, function($file) {
-    return (new Day9())->question2($file, 675280050);
-}));
-$app->add(runQuestion(10, 1, function($file) {
-    return (new Day10())->question1($file);
-}));
-$app->add(runQuestion(10, 2, function($file) {
-    return (new Day10())->question2($file);
-}));
-$app->add(runQuestion(11, 1, function($file) {
-    return (new Day11())->question1($file);
-}));
-$app->add(runQuestion(11, 2, function($file) {
-    return (new Day11())->question2($file);
-}));
-$app->add(runQuestion(12, 1, function($file) {
-    return (new Day12())->question1($file);
-}));
-$app->add(runQuestion(12, 2, function($file) {
-    return (new Day12())->question2($file);
-}));
-$app->add(runQuestion(13, 1, function($file) {
-    $res = (new Day13())->question1($file);
-    $id = array_keys($res)[0];
-    $wait = array_values($res)[0];
-    echo "BUS $id => $wait\n";
-    return $id * $wait;
-}));
-$app->add(runQuestion(13, 2, function($file) {
-    return (new Day13())->question2($file);
-}));
-$app->add(runQuestion(14, 1, function($file) {
-    return (new Day14())->question1($file);
-}));
-$app->add(runQuestion(14, 2, function($file) {
-    return (new Day14())->question2($file);
-}));
-$app->add(runQuestion(15, 1, function($file) {
-    return (new Day15([13,0,10,12,1,5,8]))->nThPosition(2020);
-}));
-$app->add(runQuestion(15, 2, function($file) {
-    return (new Day15([13,0,10,12,1,5,8]))->nThPosition(30000000);
-}));
-$app->add(runQuestion(16, 1, function($file) {
-    return (new Day16())->question1($file);
-}));
-$app->add(runQuestion(16, 2, function($file) {
-    return (new Day16())->question2($file);
-}));
-$app->add(runQuestion(17, 1, function($file) {
-    return (new Day17())->question1($file);
-}));
-$app->add(runQuestion(17, 2, function($file) {
-    return (new Day17())->question2($file);
-}));
-$app->add(runQuestion(18, 1, function($file) {
-    return (new Day18())->question1($file);
-}));
-$app->add(runQuestion(18, 2, function($file) {
-    return (new Day18())->question2($file);
-}));
-$app->add(runQuestion(19, 1, function($file) {
-    return (new Day19())->question1($file);
-}));
-$app->add(runQuestion(19, 2, function($file) {
-    return (new Day19())->question2($file);
-}));
-$app->add(runQuestion(20, 1, function($file) {
-    return (new Day20())->question1($file);
-}));
-$app->add(runQuestion(20, 2, function($file) {
-    return (new Day20())->question2($file);
-}));
-$app->add(runQuestion(21, 1, function($file) {
-    return (new Day21())->question1($file);
-}));
-$app->add(runQuestion(21, 2, function($file) {
-    return (new Day21())->question2($file);
-}));
-$app->add(runQuestion(22, 1, function($file) {
-    return (new Day22())->question1($file);
-}));
-$app->add(runQuestion(22, 2, function($file) {
-    return (new Day22())->question2($file);
-}));
-$app->add(runQuestion(23, 1, function($file) {
-    return (new Day23())->question1($file, 100);
-}));
-$app->add(runQuestion(23, 2, function($file) {
-    return (new Day23())->question2($file);
-}));
-$app->add(runQuestion(24, 1, function($file) {
-    return (new Day24())->question1($file);
-}));
-$app->add(runQuestion(24, 2, function($file) {
-    return (new Day24())->question2($file, 100, 200);
-}));
-$app->add(runQuestion(25, 1, function($file) {
-    return (new Day25())->question1($file);
-}));
+];
+foreach (range(1, 25) as $day) {
+    $app->add(runQuestion($day, 1, function($file) use($daySolutions, $day) {
+        return $daySolutions[$day]->question1($file ?: "input_day$day.txt");
+    }));
+    $app->add(runQuestion($day, 2, function($file) use($daySolutions, $day) {
+        return $daySolutions[$day]->question2($file ?: "input_day$day.txt");
+    }));
+}
 $app->run();
