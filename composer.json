@@ -1,8 +1,6 @@
 {
     "name": "maesierra/advent-of-code-2021",
     "type": "project",
-    "require-dev": {
-    },
     "authors": [
         {
             "name": "Maria-Eugenia Sierra",
@@ -19,6 +17,7 @@
         "symfony/console": "v3.4.47",
         "phpunit/phpunit": "9.3.8",
         "farafiri/php-parsing-tool": "^2.0",
-        "ext-intl": "*"
+        "ext-intl": "*",
+        "graphp/algorithms": "^0.8.2"
     }
 }

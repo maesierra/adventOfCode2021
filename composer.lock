@@ -4,8 +4,63 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "79ece6ad7de7205b9c350efc2d71eb88",
+    "content-hash": "60a8bc7ef7a444a0a3b5ca2f6c5e1049",
     "packages": [
+        {
+            "name": "clue/graph",
+            "version": "v0.9.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/graphp/graph.git",
+                "reference": "187902e158dead96fc5da3ae368ea1080abf267d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/graphp/graph/zipball/187902e158dead96fc5da3ae368ea1080abf267d",
+                "reference": "187902e158dead96fc5da3ae368ea1080abf267d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.3 || ^5.7 || ^4.8.35"
+            },
+            "suggest": {
+                "graphp/algorithms": "Common graph algorithms, such as Dijkstra and Moore-Bellman-Ford (shortest path), minimum spanning tree (MST), Kruskal, Prim and many more..",
+                "graphp/graphviz": "GraphViz graph drawing / DOT output"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Fhaculty\\Graph\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Lück",
+                    "email": "christian@clue.engineering"
+                }
+            ],
+            "description": "GraPHP is the mathematical graph/network library written in PHP.",
+            "homepage": "https://github.com/graphp/graph",
+            "keywords": [
+                "edge",
+                "graph",
+                "mathematical",
+                "network",
+                "vertex"
+            ],
+            "support": {
+                "issues": "https://github.com/graphp/graph/issues",
+                "source": "https://github.com/graphp/graph/tree/v0.9.2"
+            },
+            "time": "2020-12-03T18:55:21+00:00"
+        },
         {
             "name": "doctrine/instantiator",
             "version": "1.4.0",
@@ -117,6 +172,60 @@
                 "source": "https://github.com/farafiri/PHP-parsing-tool/tree/master"
             },
             "time": "2017-12-28T00:13:09+00:00"
+        },
+        {
+            "name": "graphp/algorithms",
+            "version": "v0.8.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/graphp/algorithms.git",
+                "reference": "abebbc44109f65c2962cd66f048ea3b8563e0a4a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/graphp/algorithms/zipball/abebbc44109f65c2962cd66f048ea3b8563e0a4a",
+                "reference": "abebbc44109f65c2962cd66f048ea3b8563e0a4a",
+                "shasum": ""
+            },
+            "require": {
+                "clue/graph": "~0.9.0|~0.8.0",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.4 || ^5.7 || ^4.8.35"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Graphp\\Algorithms\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Lück",
+                    "email": "christian@clue.engineering"
+                }
+            ],
+            "description": "Common mathematical graph algorithms implemented in PHP",
+            "homepage": "https://github.com/graphp/algorithms",
+            "keywords": [
+                "Graph algorithms",
+                "dijkstra",
+                "kruskal",
+                "minimum spanning tree",
+                "moore-bellman-ford",
+                "prim",
+                "shortest path"
+            ],
+            "support": {
+                "issues": "https://github.com/graphp/algorithms/issues",
+                "source": "https://github.com/graphp/algorithms/tree/v0.8.2"
+            },
+            "time": "2020-02-20T18:01:41+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -2512,5 +2621,5 @@
         "ext-intl": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
