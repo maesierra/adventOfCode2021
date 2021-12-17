@@ -11,14 +11,11 @@ namespace maesierra\AdventOfCode2021;
 use Closure;
 use maesierra\AdventOfCode2021\Day12\BigCave;
 use maesierra\AdventOfCode2021\Day12\Cave;
-use maesierra\AdventOfCode2021\Day12\End;
 use maesierra\AdventOfCode2021\Day12\CaveSystem;
-use maesierra\AdventOfCode2021\Day12\Path;
+use maesierra\AdventOfCode2021\Day12\End;
 use maesierra\AdventOfCode2021\Day12\PathAllowingTwice;
 use maesierra\AdventOfCode2021\Day12\SmallCave;
 use maesierra\AdventOfCode2021\Day12\Start;
-
-use ReflectionException;
 
 class Day12 {
 

@@ -18,12 +18,6 @@ class Day14Test extends TestCase {
     }
 
     public function testQuestion2() {
-        $t = array_fill(0, 4980737, "a");
-        $s = "";
-        foreach ($t as $a) {
-            $s.= $a;
-        }
-        echo strlen($s);
         $this->assertEquals(2188189693529, (new Day14())->question2(__DIR__ . DIRECTORY_SEPARATOR . "Day14.txt"));
     }
 }
