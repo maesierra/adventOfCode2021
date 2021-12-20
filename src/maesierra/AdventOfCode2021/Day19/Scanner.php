@@ -100,7 +100,6 @@ class Scanner
         $x = ($coords[($orientation->upCoordinate + 0) % 3] * $orientation->orientationX) + $offsetX;
         $y = ($coords[($orientation->upCoordinate + 1) % 3] * $orientation->orientationY) + $offsetY;
         $z = ($coords[($orientation->upCoordinate + 2) % 3] * $orientation->orientationZ) + $offsetZ;
-        echo "checking beacon $x:$y:$z\n";
         return isset($this->beacons["$x:$y:$z"]);
     }
 

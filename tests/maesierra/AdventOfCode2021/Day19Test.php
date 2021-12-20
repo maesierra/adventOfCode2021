@@ -18,6 +18,6 @@ class Day19Test extends TestCase {
     }
 
     public function testQuestion2() {
-        $this->assertEquals(12, (new Day19())->question2(__DIR__ . DIRECTORY_SEPARATOR . "Day19_2.txt"));
+        $this->assertEquals(3621, (new Day19())->question2(__DIR__ . DIRECTORY_SEPARATOR . "Day19.txt"));
     }
 }

@@ -38,4 +38,10 @@ class Position {
         );
     }
 
+    public function manhattanDistance(Position $other) {
+        return abs($other->x - $this->x) +
+               abs($other->y - $this->y) +
+               abs($other->z - $this->z);
+    }
+
 }

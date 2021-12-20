@@ -17,6 +17,25 @@ use maesierra\AdventOfCode2021\Day19\Scanner;
 class Day19 {
 
 
+    /**
+     * @param string $inputFile
+     * @return Position[] scanner id => position
+     */
+    private function readPositions(string $inputFile) {
+        return array_reduce(explode("\n", file_get_contents($inputFile.".additional")),
+            function (&$result, $line) {
+                /** @var $result Position[] */
+                $line = trim($line);
+                if ($line) {
+                    if (preg_match('/^scanner (\d+) located at (-?\d+):(-?\d+):(-?\d+)$/', $line, $matches)) {
+                        $result[$matches[1]] = new Position($matches[2], $matches[3], $matches[4]);
+                    } return $result;
+                }
+                return $result;
+            }
+            , []
+        );
+    }
 
     /**
      * Reads the input file and splits it into rules and messages
@@ -79,9 +98,12 @@ class Day19 {
         } while ($next);
 
         $beacons = $s0->beacons;
+        $output = '';
         foreach ($scanners as $scanner) {
             if ($scanner->isLocated()) {
-                echo "scanner {$scanner->id} located at {$scanner->position}\n";
+                $str = "scanner {$scanner->id} located at {$scanner->position}\n";
+                echo $str;
+                $output .= $str;
                 foreach ($scanner->beacons as $beacon) {
                     if (!isset($beacons["$beacon"])) {
                         $beacons["$beacon"] = $beacon;
@@ -91,11 +113,25 @@ class Day19 {
                 echo "scanner {$scanner->id} not located\n";
             }
         }
+        file_put_contents($inputFile.".additional", $output);
         return count($beacons);
     }
 
     public function question2(string $inputFile):int {
-        return 0;
+        $scanners = $this->readScanners($inputFile);
+        $positions = $this->readPositions($inputFile); //Read the positions created running question 1
+        foreach ($scanners as $scanner) {
+            $scanner->position = ($scanner->id != "0") ? $positions[$scanner->id] : new Position(0, 0, 0);
+        }
+        $max = 0;
+        foreach ($scanners as $s1) {
+            foreach ($scanners as $s2) {
+                if ($s1 !== $s2) {
+                    $max = max($max, $s1->position->manhattanDistance($s2->position));
+                }
+            }
+        }
+        return $max;
     }
 
 }
