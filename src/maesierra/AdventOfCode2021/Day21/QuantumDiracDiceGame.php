@@ -7,6 +7,7 @@ namespace maesierra\AdventOfCode2021\Day21;
 class QuantumDiracDiceGame extends DiracDiceGame {
 
     private static $allRolls;
+    private static $rollsCount;
     private static $idGen = 1;
     private static $knownOutcomes = [];
     public $player1Wins = 0;
@@ -33,12 +34,23 @@ class QuantumDiracDiceGame extends DiracDiceGame {
 
     private static function allRolls(): array {
         if (!self::$allRolls) {
+            $allRolls = [];
             foreach ([1, 2, 3] as $r1) {
                 foreach ([1, 2, 3] as $r2) {
                     foreach ([1, 2, 3] as $r3) {
-                        self::$allRolls[] = [$r1, $r2, $r3];
+                        $allRolls[] = [$r1, $r2, $r3];
                     }
                 }
+            }
+            //Group them by sum
+            $bySum = array_reduce($allRolls, function(&$res, $rolls) {
+                $sum = array_sum($rolls);
+                $res[$sum][] = $rolls;
+                return $res;
+            }, []);
+            foreach ($bySum as $sum => $rollList) {
+                self::$allRolls[$sum] = reset($rollList);
+                self::$rollsCount[$sum] = count($rollList);
             }
         }
         return self::$allRolls;
@@ -50,7 +62,7 @@ class QuantumDiracDiceGame extends DiracDiceGame {
             $this->playRound($rolls, false);
         }
         if (!$this->checkGameEnd()) {
-            foreach (self::allRolls() as $rolls){
+            foreach (self::allRolls() as $sum => $rolls){
                 //Check if we already know the outcome
                 $outcome = self::$knownOutcomes[$this->toState($rolls)];
                 if (!$outcome) {
@@ -64,8 +76,8 @@ class QuantumDiracDiceGame extends DiracDiceGame {
                     $newCopy->id = self::$idGen++;
                     $outcome = $newCopy->outcome($rolls);
                 }
-                $this->player1Wins += $outcome[0];
-                $this->player2Wins += $outcome[1];
+                $this->player1Wins += $outcome[0] * self::$rollsCount[$sum];
+                $this->player2Wins += $outcome[1] * self::$rollsCount[$sum];
             };
         } else {
             if ($this->winner === $this->player1) {
