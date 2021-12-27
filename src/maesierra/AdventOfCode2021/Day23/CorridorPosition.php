@@ -14,12 +14,10 @@ class CorridorPosition extends Location {
         return $this->occupant && $this->occupant->id == $amphipod->id;
     }
 
-    public function remove(Amphipod $amphipod): bool {
-        if ($this->occupant && $amphipod->id == $this->occupant->id) {
-            $this->occupant = null;
-            return true;
-        }
-        return false;
+    public function remove(): ?Amphipod {
+        $occupant = $this->occupant;
+        $this->occupant = null;
+        return $occupant;
     }
 
     public function moveIn(Amphipod $amphipod) {

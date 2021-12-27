@@ -23,38 +23,70 @@ class Day23 {
 
     private static $progressMessage = 0;
 
-
     /**
      * @param string $inputFile
-     * @return Room[]
+     * @return Amphipod[][]
      */
-    private function readStartingPositions(string $inputFile) {
-        return array_reduce(explode("\n", file_get_contents($inputFile)),
+    private function readAmphipods(string $inputFile)
+    {
+        /** @var Amphipod[][] $amphipods */
+        return array_reverse(array_reduce(explode("\n", file_get_contents($inputFile)),
             function (&$result, $line) {
-                /** @var Room[] $result */
                 $line = trim($line);
                 if ($line) {
                     if (preg_match('/#([A-D])#([A-D])#([A-D])#([A-D])#/', $line, $matches)) {
-                        $result[0]->add(new Amphipod($matches[1]));
-                        $result[1]->add(new Amphipod($matches[2]));
-                        $result[2]->add(new Amphipod($matches[3]));
-                        $result[3]->add(new Amphipod($matches[4]));
-                    } return $result;
+                        $row = [];
+                        $row[] = new Amphipod($matches[1]);
+                        $row[] = new Amphipod($matches[2]);
+                        $row[] = new Amphipod($matches[3]);
+                        $row[] = new Amphipod($matches[4]);
+                        $result[] = $row;
+                    }
+                    return $result;
                 }
                 return $result;
             }
-            , [new Room(0, 'A'), new Room(1, 'B'), new Room(2, 'C'), new Room(3, 'D')]
-        );
+            , []
+        ));
+    }
+
+    /**
+     * @param $amphipods Amphipod[][]
+     * @param int $roomSize
+     * @return Hallway
+     */
+    private function createHallway($amphipods, $roomSize = 2) {
+        $rooms = [
+            new Room(0, 'A', $roomSize),
+            new Room(1, 'B', $roomSize),
+            new Room(2, 'C', $roomSize),
+            new Room(3, 'D', $roomSize)
+        ];
+        foreach ($amphipods as $row) {
+            foreach ($row as $pos => $amphipod) {
+                $rooms[$pos]->add($amphipod);
+            }
+        }
+
+        return new Hallway($rooms);
     }
 
     public function question1(string $inputFile):string {
-        $rooms = $this->readStartingPositions($inputFile);
-        $hallway = new Hallway($rooms);
+        $amphipods = $this->readAmphipods($inputFile);
+        $hallway = $this->createHallway($amphipods, 2);
         return Movement::totalCost($this->getBestOption($hallway));
     }
 
     public function question2(string $inputFile):string {
-        return 0;
+        $amphipods = $this->readAmphipods($inputFile);
+        $amphipods = [
+            $amphipods[0],
+            [new Amphipod('D'), new Amphipod('B'), new Amphipod('A'), new Amphipod('C')],
+            [new Amphipod('D'), new Amphipod('C'), new Amphipod('B'), new Amphipod('A')],
+            $amphipods[1],
+        ];
+        $hallway = $this->createHallway($amphipods, 4);
+        return Movement::totalCost($this->getBestOption($hallway));
     }
 
     /**
@@ -109,9 +141,12 @@ class Day23 {
             //Never block the second exit if it will block the path to the other occupant destination
             $leftOccupied = $hallway->positions[$from->exitPosition() - 1]->occupant;
             $rightOccupied = $hallway->positions[$from->exitPosition() + 1]->occupant;
-            if (($leftOccupied || $rightOccupied) && $from->isFull() && !$from->space2Locked) {
+            if (($leftOccupied || $rightOccupied) && !$from->isEmpty()) {
                 $opposite = $from->exitPosition() + ($leftOccupied ? 1 : -1);
-                if ($hallway->isPathBlocked($amphipod, $hallway->roomForType($from->otherOccupant($amphipod)->type), $opposite)) {
+                $blocked = array_filter($from->otherOccupants($amphipod), function ($a) use($from, $hallway, $opposite) {
+                    return $a->type != $from->type && $hallway->isPathBlocked($a, $hallway->roomForType($a->type), $opposite);
+                });
+                if ($blocked) {
                     $destinations = array_filter($destinations, function ($p) use($opposite, $leftOccupied) {
                         return $leftOccupied ? $p->position < $opposite : $p->position > $opposite;
                     });

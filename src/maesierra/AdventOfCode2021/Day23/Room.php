@@ -7,20 +7,23 @@ namespace maesierra\AdventOfCode2021\Day23;
 class Room extends Location {
 
     /**
-     * @var array
+     * @var Amphipod[]
      */
     public $spaces = [];
 
-    /** @var Amphipod */
-    public $space1;
-
-    /** @var Amphipod */
-    public $space2;
     /** @var string */
     public $type;
 
-    public $space1Locked =  false;
-    public $space2Locked =  false;
+    /** @var int  */
+    private $nextFree = 0;
+    /** @var int  */
+    private $firstOccupied;
+
+    /** @var int */
+    public $size;
+
+    /** @var bool[] */
+    public $locked = [];
 
     /**
      * Room constructor.
@@ -29,34 +32,44 @@ class Room extends Location {
     public function __construct($position, $type, $size = 2) {
         $this->position = $position;
         $this->type = $type;
+        $this->spaces = array_fill(0, $size, null);
+        $this->locked = array_fill(0, $size, false);
+        $this->size = $size;
+        $this->nextFree = $size - 1;
+        $this->firstOccupied = $size;
     }
 
 
     public function contains(Amphipod $amphipod): bool {
-        return ($this->containsInPosition1($amphipod)) ||
-               ($this->containsInPosition2($amphipod));
-
+        return $this->locate($amphipod) != -1;
     }
 
-    public function remove(Amphipod $amphipod): bool {
-        if  ($this->containsInPosition1($amphipod))  {
-            $this->space1 = null;
-            return true;
-        } else if  ($this->containsInPosition2($amphipod)) {
-            $this->space2 = null;
-            return true;
+    public function remove(): ?Amphipod {
+        if ($this->isEmpty()) {
+            return null;
         }
-        return false;
+        $toRemove = $this->firstOccupied;
+        $occupant = $this->spaces[$toRemove] ?? null;
+        if (!$occupant) {
+            return null;
+        }
+        if ($this->locked[$toRemove]) {
+            return null;
+        }
+        $this->spaces[$toRemove] = null;
+        $this->nextFree = $toRemove;
+        $this->firstOccupied++;
+        return $occupant;
     }
 
     public function moveIn(Amphipod $amphipod) {
-        if ($this->isEmpty()) {
-            $this->space2 = $amphipod;
-            $this->space2Locked = true;
-        } else {
-            $this->space1 = $amphipod;
-            $this->space1Locked = true;
+        if ($this->isFull()) {
+            return;
         }
+        $this->spaces[$this->nextFree] = $amphipod;
+        $this->locked[$this->nextFree] = true;
+        $this->nextFree--;
+        $this->firstOccupied--;
 
     }
 
@@ -65,37 +78,35 @@ class Room extends Location {
         return "R{$this->position}";
     }
 
-    public function accepts(Amphipod $amphipod):bool {
-        return ($this->isEmpty() || $this->isHalfCompleted()) && $amphipod->type == $this->type;
+    public function accepts(?Amphipod $amphipod):bool {
+        if (!$amphipod) {
+            return false;
+        }
+        if ($amphipod->type != $this->type || $this->isFull()) {
+            return false;
+        } else if ($this->isEmpty()) {
+            return true;
+        } else {
+            return $this->locked[$this->firstOccupied];
+        }
     }
 
     /**
      * @return Amphipod[]
      */
     public function availableToMove() {
-        $res = [];
-        if ($this->space1 && !$this->space1Locked) {
-            $res[] = $this->space1;
-        }
-        if (!$this->space1 && $this->space2 && !$this->space2Locked) {
-            $res[] = $this->space2;
-        }
-        return $res;
+        return $this->isEmpty() ? [] : (!$this->locked[$this->firstOccupied] ? [$this->spaces[$this->firstOccupied]] : []);
     }
 
     public function isEmpty() {
-        return !$this->space1 && !$this->space2;
+        return $this->nextFree == $this->size - 1;
     }
 
     /**
      * @return bool
      */
     public function isFull(): bool {
-        return $this->space1 && $this->space2;
-    }
-
-    public function isHalfCompleted():bool {
-        return !$this->isFull() && $this->space2 && $this->space2->type == $this->type;
+        return $this->firstOccupied == 0;
     }
 
     public function exitPosition(): int {
@@ -104,52 +115,49 @@ class Room extends Location {
     }
 
     public function completed():bool {
-        return $this->isFull() && $this->space1->type == $this->type && $this->space2->type == $this->type;
+        return count(array_filter($this->spaces, function($a) {
+            return !$a || $a->type != $this->type;
+        })) == 0;
     }
 
     public function add(Amphipod $amphipod) {
-        if ($this->space1) {
-            $this->space2 = $amphipod;
-            if ($amphipod->type == $this->type) {
-                $this->space2Locked = true;
+        $this->moveIn($amphipod);
+        //Keep the lock only if all previous are already locked
+        $locked = true;
+        for ($pos = $this->firstOccupied; $pos < $this->size; $pos++) {
+            if ($this->spaces[$pos]->type != $this->type) {
+                $locked = false;
+                break;
             }
-        } else {
-            $this->space1 = $amphipod;
         }
+        $this->locked[$this->firstOccupied] = $locked;
     }
 
     /**
      * @param Amphipod $a
-     * @return Amphipod|null
+     * @return Amphipod[]
      */
-    public function otherOccupant(Amphipod $a) {
-        if (!$this->isFull() || !$this->contains($a)) {
-            return null;
-        }
-        return $this->space1->id != $a->id ? $this->space2 : $this->space1;
+    public function otherOccupants(Amphipod $other) {
+        return  array_values(array_filter($this->spaces, function ($a) use($other) {
+            return $a && $a->id != $other->id;
+        }));
     }
 
     /**
      * @return Amphipod[]
      */
     public function occupants(): array {
-        $occupants = [];
-        if ($this->space1) {
-            $occupants[] = $this->space1;
-        }
-        if ($this->space2) {
-            $occupants[] = $this->space2;
-        }
-        return $occupants;
+        return array_values(array_filter($this->spaces));
     }
 
     public function innerDistance(Amphipod $amphipod): int {
-        if ($this->contains($amphipod)) {
+        $pos = $this->locate($amphipod);
+        if ($pos != -1) {
             //Exiting the room
-            return $this->containsInPosition2($amphipod) ? 2 : 1;
+            return $pos + 1;
         } else {
             //Entering the room
-            return $this->isEmpty() ? 2 : 1;
+            return $this->nextFree + 1;
         }
     }
 
@@ -157,23 +165,22 @@ class Room extends Location {
      * @param Amphipod $amphipod
      * @return bool
      */
-    public function containsInPosition1(Amphipod $amphipod): bool {
-        return $this->space1 && $this->space1->id == $amphipod->id;
+    public function canMoveOut(Amphipod $amphipod): bool {
+        $pos = $this->locate($amphipod);
+        return $pos != -1 && $pos == $this->firstOccupied;
     }
+
 
     /**
      * @param Amphipod $amphipod
-     * @return bool
+     * @return int|string
      */
-    public function containsInPosition2(Amphipod $amphipod): bool {
-        return $this->space2 && $this->space2->id == $amphipod->id;
-    }
-
-    /**
-     * @param $position
-     * @return Amphipod
-     */
-    public function getSpace($position) {
-        return $position == 1 ? $this->space1 : $this->space2;
+    private function locate(Amphipod $amphipod): int {
+        foreach ($this->spaces as $p => $a) {
+            if ($a && $amphipod->id == $a->id) {
+                return $p;
+            }
+        }
+        return -1;
     }
 }

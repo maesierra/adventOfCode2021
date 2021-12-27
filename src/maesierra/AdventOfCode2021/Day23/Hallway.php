@@ -166,9 +166,8 @@ class Hallway {
     public function isPathBlocked($amphipod, $to, $additonalBlock = -1) {
         /** @var Room|Location $from */
         $from = $this->locate($amphipod);
-        if ($from instanceof Room && $from->isFull() && $from->containsInPosition2($amphipod)) {
-            echo "Blocked because of position 2 {$from->id()} ".implode(",", $from->occupants())."\n";
-            return true; //In position 2 they are always blocked
+        if ($from instanceof Room && !$from->canMoveOut($amphipod)) {
+            return true; //It's blocked inside the room
         }
         if ($from->id() == $to->id()) {
             return true;
@@ -223,18 +222,18 @@ class Hallway {
         $hall = implode("", array_map(function($p) {
             return $p->occupant ? $p->occupant->type : '.';
         }, $this->positions));
-        $r1  = implode("#", array_map(function($r) {
-            $amphipod = $r->getSpace(1);
-            return $amphipod ? $amphipod->type : '.';
-        }, $this->rooms));
-        $r2  = implode("#", array_map(function($r) {
-            $amphipod = $r->getSpace(2);
-            return $amphipod ? $amphipod->type : '.';
-        }, $this->rooms));
-        return "#############\n".
-               "#". $hall ."#\n".
-               "###".$r1."###\n".
-               "  #".$r2."#  \n".
+        $str = "#############\n".
+               "#". $hall ."#\n";
+        for ($i = 0; $i < $this->rooms[0]->size; $i++) {
+            $r = implode("#", array_map(function($r) use($i) {
+                $amphipod = $r->spaces[$i];
+                return $amphipod ? $amphipod->type : '.';
+            }, $this->rooms));
+            $str.= $i == 0 ?
+                "###".$r."###\n" :
+                "  #".$r."#  \n" ;
+        }
+        return $str.
                "  #########  \n";
     }
 

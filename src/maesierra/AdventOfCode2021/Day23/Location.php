@@ -10,7 +10,7 @@ abstract class Location {
 
     public abstract function contains(Amphipod $amphipod):bool;
 
-    public abstract function remove(Amphipod $amphipod):bool;
+    public abstract function remove():?Amphipod;
 
     public abstract function moveIn(Amphipod $amphipod);
 
