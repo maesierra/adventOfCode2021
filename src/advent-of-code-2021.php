@@ -70,13 +70,22 @@ function runQuestion($day, $question, $run)
                     'file',
                     InputArgument::OPTIONAL,
                     'File to process'
+                )
+                ->addArgument(
+                    'param1',
+                    InputArgument::OPTIONAL,
+                    'Extra param'
+                )->addArgument(
+                    'param2',
+                    InputArgument::OPTIONAL,
+                    'Extra param 2'
                 );
 
         }
 
         public function execute(InputInterface $input, OutputInterface $output) {
             $r = $this->run;
-            $result = $r($input->getArgument("file"));
+            $result = $r($input->getArgument("file"), $input->getArguments());
             $output->writeln("Result is " . $result);
         }
     };
@@ -110,11 +119,11 @@ $daySolutions = [
 
 ];
 foreach (range(1, 25) as $day) {
-    $app->add(runQuestion($day, 1, function($file) use($daySolutions, $day) {
-        return $daySolutions[$day]->question1($file ?: "input_day$day.txt");
+    $app->add(runQuestion($day, 1, function($file, $params) use($daySolutions, $day) {
+        return $daySolutions[$day]->question1($file ?: "input_day$day.txt", $params);
     }));
-    $app->add(runQuestion($day, 2, function($file) use($daySolutions, $day) {
-        return $daySolutions[$day]->question2($file ?: "input_day$day.txt");
+    $app->add(runQuestion($day, 2, function($file, $params) use($daySolutions, $day) {
+        return $daySolutions[$day]->question2($file ?: "input_day$day.txt", $params);
     }));
 }
 $app->run();
