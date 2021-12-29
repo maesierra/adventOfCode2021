@@ -19,7 +19,7 @@ class Day24Test extends TestCase {
 
     public function testQuestion1() {
         $inputFile = __DIR__ . DIRECTORY_SEPARATOR . "Day24.txt";
-        $this->assertNotNull((new Day24())->question1($inputFile, [/*'param1' => 11*/]));
+        $this->assertNotNull((new Day24())->question1($inputFile, ['param1' => 11]));
     }
 
     public function testQuestion2() {
